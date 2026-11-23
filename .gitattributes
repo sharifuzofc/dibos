@@ -1,0 +1,11 @@
+# Include the project's source, configuration, assets, and documentation in GitHub's language statistics.
+postcss.config.mjs linguist-language=JavaScript linguist-detectable
+*.sql linguist-language=SQL linguist-detectable
+*.prisma linguist-detectable
+*.json linguist-detectable
+*.toml linguist-detectable
+*.md linguist-detectable -linguist-documentation
+*.svg linguist-detectable
+
+# Keep the generated dependency lockfile out of the language percentages.
+package-lock.json -linguist-detectable
