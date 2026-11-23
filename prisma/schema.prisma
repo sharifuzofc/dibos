@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EditorialStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Observance {
+  slug        String          @id
+  payload     Json
+  status      EditorialStatus @default(DRAFT)
+  verifiedAt  DateTime?
+  publishedAt DateTime?
+  updatedAt   DateTime        @updatedAt
+}
+
+model Admin {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  sessions     Session[]
+}
+
+model Session {
+  tokenHash String   @id
+  adminId   String
+  expiresAt DateTime
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([adminId])
+}
+
+model LoginAttempt {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model Subscriber {
+  email     String   @id
+  createdAt DateTime @default(now())
+  locale    String
+}
